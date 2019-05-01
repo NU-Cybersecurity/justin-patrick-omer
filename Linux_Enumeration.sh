@@ -35,6 +35,7 @@ done
 ascii
 
 # System Information
+# -Patrick- "Basic sysinfo summary. Plan on adding a check of the current version against available kernel updates and alerting if there's a new kernel update available."
 printf "System Summary"
 printf "$(uname -s)"
 printf "$(uname -o)"
