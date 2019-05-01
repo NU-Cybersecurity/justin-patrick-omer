@@ -42,7 +42,7 @@ printf "The operating system is $(uname -o) \n"
 printf "The kernel name is $(uname -s) \n"
 printf "The kernel release is $(uname -r) \n"
 printf "The kernel version is $(uname -v) \n"
-printf "The processor type is $(uname -p) \n"
+printf "The system architecture  is $(uname -m) \n"
 
 
 # User Information
