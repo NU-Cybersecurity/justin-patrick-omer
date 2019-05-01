@@ -80,7 +80,7 @@ printf "$(sed -n '/NOPASSWD/p' /etc/sudoers | sed -n '/#/!p' | sed -n '/root/!p'
 printf "\n \n"
  
  
- printf "	CHECKING WHEEL GROUP \n"
+ printf "	CHECKING WHEEL GROUP: \n"
  printf "$(cat /etc/group | sed -n '/wheel/p' | awk -F ":" '{$1=$2=$3="";print $0}')"
  
 # Services
