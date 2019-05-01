@@ -76,7 +76,7 @@ grep -e "$i" /etc/sudoers | sed -n '/#/!p' | sed -n '/bin/!p' | sed -n '/User_Al
 done
 printf "\n \n"
 printf "        CHECKING IF ANY USERS HAVE NOPASSWD | WARNING | IF ANY RESULTS ARE PRODUCED, THESE USERS DO NOT REQUIRE TO AUTHENTICATE TO ESCALATE PRIVILEGES | THIS IS NOT RECOMMENDED  \n \n"
-printf "$(sed -n '/NOPASSWD/p' /etc/sudoers | sed -n '/#/!p')"
+printf "$(sed -n '/NOPASSWD/p' /etc/sudoers | sed -n '/#/!p' | sed -n '/root/!p')"
 printf "\n \n"
  
  
