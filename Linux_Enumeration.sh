@@ -109,6 +109,22 @@ done
 
 
 # Services
+printf "Checking for Active Services"
+#Checking SYSTEMCTL (REDHAT/CENTOS)
+DISTRO="$(cat /proc/version)"
+
+if [ "$DISTRO" == "*Red*"
+then
+printf "System has been determined to be Red Hat, checking Systemctl. \n"
+printf "Printing currently active services: \n"
+printf "$(systemctl | sed -n '/service/p' | sed -n '/active/p' | awk -F"." '{print $1}')"
+fi
+
+#if [ "$DISTRO" == "*Ubuntu*" ]
+#then 
+#printf "System has been determined to be Ubuntu, checking Services. \n"
+#printf "Printing currently active services: \n"
+#printf "$(service 
 
 # Find Interesting Files
 
