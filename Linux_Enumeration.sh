@@ -35,14 +35,15 @@ done
 ascii
 
 # System Information
-# -Patrick- "Basic sysinfo summary. Plan on adding a check of the current version against available kernel updates and alerting if there's a new kernel update available."
-printf "System Summary"
-printf "$(uname -s) \n"
-printf "$(uname -o) \n"
-printf "$(uname -n) \n"
-printf "$(uname -r) \n"
-printf "$(uname -v) \n"
-printf "$(uname -m) \n"
+# -Patrick- "Basic sysinfo summary."
+printf "System Summary \n"
+printf "The hostname is $(uname -n) \n"
+printf "The operating system is $(uname -o) \n"
+printf "The kernel name is $(uname -s) \n"
+printf "The kernel release is $(uname -r) \n"
+printf "The kernel version is $(uname -v) \n"
+printf "The processor type is $(uname -p) \n"
+
 
 # User Information
 
