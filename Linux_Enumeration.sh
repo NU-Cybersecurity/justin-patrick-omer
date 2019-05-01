@@ -96,6 +96,7 @@ continue
 fi
 done
 
+# Patrick "Going to create Variable for every group in sudoers file "noted by the % prefix" and perform a loop that shows the users in that group. The WHEEL group is just the most common." 
  printf "       CHECKING WHEEL GROUP \n"
 printf "Users in WHEEL group:"
 printf "$(cat /etc/group | sed -n '/wheel/p' | awk -F ":" '{$1=$2=$3="";print $0}')"
