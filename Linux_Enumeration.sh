@@ -55,7 +55,7 @@ printf "	USER ACCOUNTS WITH BASH ACCESS \n"
  printf "$(cat ./passwd | sed -n '/false/!p' | sed -n '/nologin/!p' | awk -F":" '{print $1}')"
  printf "\n"
  printf "	USER ACCOUNTS WITHOUT BASH ACCESS 'i.e. Service Accounts' \n"
- printf "$(cat ./passwd | sed -n '/bash/!p' | awk -F":" '{print $1}')"
+ printf "$(cat /etc/passwd | sed -n '/bash/!p' | awk -F":" '{print $1}')"
  printf "\n"
 # Services
 
