@@ -58,6 +58,31 @@ printf "	USER ACCOUNTS WITH BASH ACCESS \n"
  printf "	USER ACCOUNTS WITHOUT BASH ACCESS 'i.e. Service Accounts' \n"
  printf "$(cat /etc/passwd | sed -n '/bash/!p' | awk -F":" '{print $1}')"
  printf "\n"
+ #Check who has sudo access
+USER="printf "$(cat /etc/passwd | awk -F":" '{print $1}')""
+GROUP="printf "$(cat /etc/group | awk -F":" '{print $1}')""
+printf "\n"
+printf "        CHECKING SUDOERS FILE \n"
+printf "        USER ACCOUNTS WITH SUDO CAPABILITIES \n \n"
+for i in $USER
+do
+grep -e "$i"  /etc/sudoers | sed -n '/#/!p' | sed -n '/User_Alias/!p' | sed -n '/root/!p' | sed -n '/bin/!p'
+done
+printf "\n"
+printf "        GROUP ACCOUNTS WITH SUDO CAPABILITIES \n \n"
+for i in $GROUP
+do
+grep -e "$i" /etc/sudoers | sed -n '/#/!p' | sed -n '/bin/!p' | sed -n '/User_Alias/!p' | sed -n '/root/!p'
+done
+printf "\n \n"
+printf "        CHECKING IF ANY USERS HAVE NOPASSWD | WARNING | IF ANY RESULTS ARE PRODUCED, THESE USERS DO NOT REQUIRE TO AUTHENTICATE TO ESCALATE PRIVILEGES | THIS IS NOT RECOMMENDED  \n \n"
+printf "$(sed -n '/NOPASSWD/p' /etc/sudoers | sed -n '/#/!p')"
+printf "\n \n"
+ 
+ 
+ printf "	CHECKING WHEEL GROUP"
+ printf "$(cat /etc/group | sed -n '/wheel/p' | awk -F ":" '{$1=$2=$3="";print $0}')"
+ 
 # Services
 
 # Find Interesting Files
