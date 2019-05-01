@@ -75,13 +75,36 @@ do
 grep -e "$i" /etc/sudoers | sed -n '/#/!p' | sed -n '/bin/!p' | sed -n '/User_Alias/!p' | sed -n '/root/!p'
 done
 printf "\n \n"
-printf "        CHECKING IF ANY USERS HAVE NOPASSWD | WARNING | IF ANY RESULTS ARE PRODUCED, THESE USERS DO NOT REQUIRE TO AUTHENTICATE TO ESCALATE PRIVILEGES | THIS IS NOT RECOMMENDED  \n \n"
-printf "$(sed -n '/NOPASSWD/p' /etc/sudoers | sed -n '/#/!p' | sed -n '/root/!p')"
-printf "\n \n"
- 
- 
- printf "	CHECKING WHEEL GROUP: \n"
- printf "$(cat /etc/group | sed -n '/wheel/p' | awk -F ":" '{$1=$2=$3="";print $0}')"
+for i in $USER
+do
+NOPASSWD="$(sed -n '/NOPASSWD/p' /etc/sudoers | sed -n '/#/!p' | sed -n '/root/!p' | sed -n "/$i/p" | awk '{print $1}')"
+if [ "$NOPASSWD" != "" ]
+then
+printf "        WARNING \nUser $i SUDOERS configuration contains NOPASSWD \n"
+else
+continue
+fi
+done
+for i in $GROUP
+do
+NOPASSWD="$(sed -n '/NOPASSWD/p' /etc/sudoers | sed -n '/#/!p' | sed -n '/root/!p' | sed -n "/$i/p" | awk '{print $1}')"
+if [ "$NOPASSWD" != "" ]
+then
+printf "        WARNING \nGroup $i SUDOERS configuration contains NOPASSWD \n"
+else
+continue
+fi
+done
+
+ printf "       CHECKING WHEEL GROUP \n"
+printf "Users in WHEEL group:"
+printf "$(cat /etc/group | sed -n '/wheel/p' | awk -F ":" '{$1=$2=$3="";print $0}')"
+printf "\n"
+
+# Services
+
+# Find Interesting Files
+
  
 # Services
 
