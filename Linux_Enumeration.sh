@@ -36,13 +36,17 @@ ascii
 
 # System Information
 # -Patrick- "Basic sysinfo summary."
-printf "System Summary \n"
-printf "The hostname is $(uname -n) \n"
-printf "The operating system is $(uname -o) \n"
-printf "The kernel name is $(uname -s) \n"
-printf "The kernel release is $(uname -r) \n"
-printf "The kernel version is $(uname -v) \n"
-printf "The system architecture  is $(uname -m) \n"
+
+
+printf "\n \n"
+printf "	SYSTEM SUMMARY \n"
+printf "Hostname: 		$(uname -n) \n"
+printf "Operating System: 	$(uname -o) \n"
+printf "Kernal Name: 		$(uname -s) \n"
+printf "Kernel Release: 	$(uname -r) \n"
+printf "Kernel Version: 	$(uname -v) \n"
+printf "System Architecture: 	$(uname -m) \n"
+printf "\n \n"
 
 
 # User Information
