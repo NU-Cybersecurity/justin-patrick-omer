@@ -35,6 +35,13 @@ done
 ascii
 
 # System Information
+printf "System Summary"
+printf "$(uname -s)"
+printf "$(uname -o)"
+printf "$(uname -n)"
+printf "$(uname -r)"
+printf "$(uname -v)"
+printf "$(uname -m)"
 
 # User Information
 
