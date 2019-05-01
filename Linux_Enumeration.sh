@@ -66,13 +66,24 @@ printf "        CHECKING SUDOERS FILE \n"
 printf "        USER ACCOUNTS WITH SUDO CAPABILITIES \n \n"
 for i in $USER
 do
-grep -e "$i"  /etc/sudoers | sed -n '/#/!p' | sed -n '/User_Alias/!p' | sed -n '/root/!p' | sed -n '/bin/!p'
+USERSUDO="$(grep -e "$i"  /etc/sudoers | sed -n '/#/!p' | sed -n '/User_Alias/!p' | sed -n '/root/!p' | sed -n '/bin/!p')"
+if [[ $USERSUDO != "" ]]
+then
+printf "$i \n"
+fi
 done
 printf "\n"
 printf "        GROUP ACCOUNTS WITH SUDO CAPABILITIES \n \n"
 for i in $GROUP
 do
-grep -e "$i" /etc/sudoers | sed -n '/#/!p' | sed -n '/bin/!p' | sed -n '/User_Alias/!p' | sed -n '/root/!p'
+GROUPSUDO="$(grep -e "$i" /etc/sudoers | sed -n '/#/!p' | sed -n '/bin/!p' | sed -n '/User_Alias/!p' | sed -n '/root/!p')"
+if [[ $GROUPSUDO != "" ]]
+then
+printf "$i \n"
+printf "Users in "$i" group:"
+printf "$(cat /etc/group | sed -n "/$i/p" | awk -F ":" '{$1=$2=$3="";print $0}')"
+printf "\n \n"
+fi
 done
 printf "\n \n"
 for i in $USER
@@ -96,17 +107,8 @@ continue
 fi
 done
 
-# Patrick "Going to create Variable for every group in sudoers file "noted by the % prefix" and perform a loop that shows the users in that group. The WHEEL group is just the most common." 
- printf "       CHECKING WHEEL GROUP \n"
-printf "Users in WHEEL group:"
-printf "$(cat /etc/group | sed -n '/wheel/p' | awk -F ":" '{$1=$2=$3="";print $0}')"
-printf "\n"
 
 # Services
 
 # Find Interesting Files
 
- 
-# Services
-
-# Find Interesting Files
