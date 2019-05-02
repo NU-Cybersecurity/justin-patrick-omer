@@ -113,7 +113,7 @@ printf "Checking for Active Services"
 #Checking SYSTEMCTL (REDHAT/CENTOS)
 DISTRO="$(sed -n '/DISTRIB_ID/p' /etc/*-release | awk -F "=" '{print $2}')"
 
-if [ "$DISTRO" == "Red Hat"
+if [ "$DISTRO" == "Red Hat" ]
 then
 printf "Distrobution = Red Hat, checking Systemctl. \n"
 printf "$(systemctl | sed -n '/service/p' | sed -n '/active/p' | awk -F"." '{print $1}')"
