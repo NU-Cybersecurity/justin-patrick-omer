@@ -5,6 +5,14 @@
 # Okay, so first we need to layout the sections of what we're trying to enumerate. Feel free to add more. I figure the current four is a decent amount? I know there are plenty of other
 # Linux Enumeration scripts out there with more but I want to see what we can create on our own and with what we know should be checked.
 # Cool ASCII text because... Why not?
+# Redirect stdout ( > ) into a named pipe ( >() ) running "tee"
+
+exec >	>(tee -i /tmp/Linux_Enumerator_Report-"$(date --date=today +%Y-%m-%d-%T).log")
+# Without this, only stdout would be captured - i.e. log file would not contain any error messages.
+# log file would not contain any error messages.
+exec 2>&1
+
+
 ascii()
 {
     cat << "EOF"
@@ -30,6 +38,9 @@ while getopts ":h?" opt; do
 done
 
 ascii
+
+
+printf "A COPY OF THE RESULTS OF WILL BE CREATED AT /tmp/Linux_Enumerator_Report-"$(date --date=today +%Y-%m-%d-%T).log"  "
 
 # System Information
 #"Basic sysinfo summary."
