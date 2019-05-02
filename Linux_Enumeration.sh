@@ -98,7 +98,7 @@ for i in $USER
 do
 
 
-# Cchoheck if any users/groups can SUDO up without re-authenticating
+# Checking if any entries include NOPASSWD
 NOPASSWD="$(sed -n '/NOPASSWD/p' /etc/sudoers | sed -n '/#/!p' | sed -n '/root/!p' | sed -n "/$i/p" | awk '{print $1}')"
 if [ "$NOPASSWD" != "" ]
 then
