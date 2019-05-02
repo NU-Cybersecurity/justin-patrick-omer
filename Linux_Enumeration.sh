@@ -6,11 +6,7 @@
 # Linux Enumeration scripts out there with more but I want to see what we can create on our own and with what we know should be checked.
 # Cool ASCII text because... Why not?
 
-# Redirect stdout ( > ) into a named pipe ( >() ) running "tee"
-exec >	>(tee -i /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log")
-# Without this, only stdout would be captured - i.e. log file would not contain any error messages.
-# log file would not contain any error messages.
-exec 2>&1
+
 
 
 ascii()
@@ -38,9 +34,21 @@ while getopts ":h?" opt; do
 done
 
 ascii
-
-
+printf "\n \nWould you like a copy of the results? \nEnter Y or N (Default N): "
+read RESULTS
+if [ "$RESULTS"  == "Y" ] 
+then
 printf "\n \nA COPY OF THE RESULTS WILL BE CREATED AT: /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log"  "
+# Redirect stdout ( > ) into a named pipe ( >() ) running "tee"
+exec >	>(tee -i /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log")
+# Without this, only stdout would be captured - i.e. log file would not contain any error messages.
+# log file would not contain any error messages.
+exec 2>&1
+else
+printf "\n \n A copy will not be saved"
+fi
+
+
 
 # System Information
 #"Basic sysinfo summary."
