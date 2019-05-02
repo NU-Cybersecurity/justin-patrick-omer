@@ -58,11 +58,11 @@ printf "\n"
 
 # User Information
 #Print username in /etc/passwd, excluding those with the /sbin/nologin or /bin/false
-printf "		USER ACCOUNTS WITH BASH ACCESS \n" 
+printf "		USERS WITH BASH PRIVILEGES \n" 
  printf "$(cat /etc/passwd | sed -n '/false/!p' | sed -n '/nologin/!p' | awk -F":" '{print $1}')"
  printf "\n"
  # Print all other users (i.e. service accounts)
- printf "		USER ACCOUNTS WITHOUT BASH ACCESS 'i.e. Service Accounts' \n"
+ printf "		USERS WITHOUT BASH PRIVILEGES \n	'i.e. Service Accounts or Disabled Accounts' \n"
  printf "$(cat /etc/passwd | sed -n '/bash/!p' | awk -F":" '{print $1}')"
  printf "\n"
  
