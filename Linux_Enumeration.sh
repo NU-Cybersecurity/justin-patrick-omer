@@ -7,7 +7,7 @@
 # Cool ASCII text because... Why not?
 
 # Redirect stdout ( > ) into a named pipe ( >() ) running "tee"
-exec >	>(tee -i /tmp/Linux_Enumerator_Report-"$(date --date=today +%Y-%m-%d-%T).log")
+exec >	>(tee -i /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%T).log")
 # Without this, only stdout would be captured - i.e. log file would not contain any error messages.
 # log file would not contain any error messages.
 exec 2>&1
@@ -40,7 +40,7 @@ done
 ascii
 
 
-printf "\n \nA COPY OF THE RESULTS WILL BE CREATED AT :/tmp/Linux_Enumerator_Report-"$(date --date=today +%Y-%m-%d-%T).log"  "
+printf "\n \nA COPY OF THE RESULTS WILL BE CREATED AT :/tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%T).log"  "
 
 # System Information
 #"Basic sysinfo summary."
