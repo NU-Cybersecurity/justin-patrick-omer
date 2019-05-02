@@ -71,7 +71,6 @@ printf "		USERS WITH BASH PRIVILEGES \n"
 USER="printf "$(cat /etc/passwd | awk -F":" '{print $1}')""
 GROUP="printf "$(cat /etc/group | awk -F":" '{print $1}')""
 printf "\n"
-printf "        	CHECKING SUDOERS FILE \n"
 printf "        	USERS WITH SUDO PRIVILEGES \n \n"
 for i in $USER
 do
