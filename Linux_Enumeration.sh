@@ -109,10 +109,10 @@ done
 DISTRO="$(sed -n '/DISTRIB_ID/p' /etc/*-release | awk -F "=" '{print $2}')"
 if [ "$DISTRO" == "Red Hat" ] && [ "$DISTRO" == "Centos" ]
 then
-printf "Distrobution = Red Hat or Centos, checking Systemctl. \n"
+printf "Distribution = Red Hat or Centos, checking Systemctl. \n"
 printf "$(systemctl | sed -n '/service/p' | sed -n '/active/p' | awk -F"." '{print $1}')"
 else 
-printf "Distrobution = Ubuntu, Debian, or Other, checking Service. \n '?' = Status Unknown \n '+' = Status Running "
+printf "Distribution = Ubuntu, Debian, or Other, checking Service. \n '?' = Status Unknown \n '+' = Status Running "
 printf "$(service --status-all | sed -n '/+/p')"
 fi
 
