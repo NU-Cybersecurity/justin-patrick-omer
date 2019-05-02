@@ -40,7 +40,7 @@ done
 ascii
 
 
-printf "\n \nA COPY OF THE RESULTS WILL BE CREATED AT :/tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log"  "
+printf "\n \nA COPY OF THE RESULTS WILL BE CREATED AT: /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log"  "
 
 # System Information
 #"Basic sysinfo summary."
