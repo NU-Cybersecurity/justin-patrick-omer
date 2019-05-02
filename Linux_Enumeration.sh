@@ -32,7 +32,7 @@ done
 ascii
 
 # System Information
-# -Patrick- "Basic sysinfo summary."
+#"Basic sysinfo summary."
 
 
 printf "\n \n"
@@ -45,6 +45,15 @@ printf "Kernel Version: 	$(uname -v) \n"
 printf "System Architecture: 	$(uname -m) \n"
 printf "\n \n"
 
+#Network Information
+printf "	NETWORK INTERFACE SUMMARY \n"
+printf "$( ip addr show | sed -n '/valid/!p' | awk -F " " '{print $2}')"
+printf "\n"
+
+#DNS Information
+printf "	DNS SERVER SUMMARY \n"
+printf "$(sed -n '/nameserver/p' /etc/resolv.conf  | awk -F" " '{print $2}')"
+printf "\n"
 
 # User Information
 #Print username in /etc/passwd, excluding those with the /sbin/nologin or /bin/false
@@ -55,6 +64,8 @@ printf "	USER ACCOUNTS WITH BASH ACCESS \n"
  printf "	USER ACCOUNTS WITHOUT BASH ACCESS 'i.e. Service Accounts' \n"
  printf "$(cat /etc/passwd | sed -n '/bash/!p' | awk -F":" '{print $1}')"
  printf "\n"
+ 
+
  #Check who has sudo access
 USER="printf "$(cat /etc/passwd | awk -F":" '{print $1}')""
 GROUP="printf "$(cat /etc/group | awk -F":" '{print $1}')""
@@ -85,6 +96,9 @@ done
 printf "\n \n"
 for i in $USER
 do
+
+
+# Check if any users/groups can SUDO up without re-authenticating
 NOPASSWD="$(sed -n '/NOPASSWD/p' /etc/sudoers | sed -n '/#/!p' | sed -n '/root/!p' | sed -n "/$i/p" | awk '{print $1}')"
 if [ "$NOPASSWD" != "" ]
 then
@@ -106,6 +120,7 @@ done
 
 
 # Services
+#Checking if Distro is Redhat/Centos or other, using Systemctl for Redhat/Centos and Services for other. 
 DISTRO="$(sed -n '/DISTRIB_ID/p' /etc/*-release | awk -F "=" '{print $2}')"
 if [ "$DISTRO" == "Red Hat" ] && [ "$DISTRO" == "Centos" ]
 then
