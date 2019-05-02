@@ -37,12 +37,13 @@ ascii
 
 printf "\n \n"
 printf "	SYSTEM SUMMARY \n"
-printf "Hostname: 		$(uname -n) \n"
-printf "Operating System: 	$(uname -o) \n"
-printf "Kernal Name: 		$(uname -s) \n"
-printf "Kernel Release: 	$(uname -r) \n"
-printf "Kernel Version: 	$(uname -v) \n"
-printf "System Architecture: 	$(uname -m) \n"
+printf "Hostname:				$(uname -n) \n"
+printf "Operating System:		$(uname -o) \n"
+printf "Distribution:			$(sed -n '/DISTRIB_ID/p' /etc/*-release | awk -F "=" '{print $2}')"
+printf "Kernal Name: 			$(uname -s) \n"
+printf "Kernel Release:			$(uname -r) \n"
+printf "Kernel Version: 		$(uname -v) \n"
+printf "System Architecture:	$(uname -m) \n"
 printf "\n \n"
 
 #Network Information
