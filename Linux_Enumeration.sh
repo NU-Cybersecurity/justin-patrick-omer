@@ -45,7 +45,7 @@ exec >	>(tee -i /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).
 # log file would not contain any error messages.
 exec 2>&1
 else
-printf "\n \n A copy will not be saved"
+printf "\n \n A COPY WILL NOT BE SAVED"
 fi
 
 
