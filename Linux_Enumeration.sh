@@ -1,12 +1,9 @@
 #! /bin/bash
-
 # This script is intended to help users in an offensive and defensive manner when trying to enumerate a local linux machine for permissions issues.
 # This could include misconfigured file permissions, user permissions, sudo privileges, etc. 
 # After finding an issue, the script will attempt to provide advice for remediation (Dynamic or Static?)
-
 # Okay, so first we need to layout the sections of what we're trying to enumerate. Feel free to add more. I figure the current four is a decent amount? I know there are plenty of other
 # Linux Enumeration scripts out there with more but I want to see what we can create on our own and with what we know should be checked.
-
 # Cool ASCII text because... Why not?
 ascii()
 {
@@ -113,17 +110,15 @@ printf "Checking for Active Services"
 #Checking SYSTEMCTL (REDHAT/CENTOS)
 DISTRO="$(sed -n '/DISTRIB_ID/p' /etc/*-release | awk -F "=" '{print $2}')"
 
-if [ "$DISTRO" == "Red Hat" ]
+if [ "$DISTRO" == "Red Hat" ] && [ "$DISTRO" == "Centos" ]
 then
-printf "Distrobution = Red Hat, checking Systemctl. \n"
+printf "Distrobution = Red Hat or Centos, checking Systemctl. \n"
 printf "$(systemctl | sed -n '/service/p' | sed -n '/active/p' | awk -F"." '{print $1}')"
-fi
-
-if [ "$DISTRO" == "Ubuntu" ]
-then 
-printf "Distrobution = Ubuntu, checking Services. \n '?' = Status Unknown \n '+' = Status Running "
+else 
+printf "Distrobution = Ubuntu, Debian, or Other, checking Service. \n '?' = Status Unknown \n '+' = Status Running "
 printf "$(service --status-all | sed -n '/+/p')"
 fi
+
 
 # Find Interesting Files
 
