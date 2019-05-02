@@ -72,7 +72,7 @@ USER="printf "$(cat /etc/passwd | awk -F":" '{print $1}')""
 GROUP="printf "$(cat /etc/group | awk -F":" '{print $1}')""
 printf "\n"
 printf "        	CHECKING SUDOERS FILE \n"
-printf "        	USER ACCOUNTS WITH SUDO CAPABILITIES \n \n"
+printf "        	USERS WITH SUDO PRIVILEGES \n \n"
 for i in $USER
 do
 USERSUDO="$(grep -e "$i"  /etc/sudoers | sed -n '/#/!p' | sed -n '/User_Alias/!p' | sed -n '/root/!p' | sed -n '/bin/!p')"
@@ -82,7 +82,7 @@ printf "$i \n"
 fi
 done
 printf "\n"
-printf "        	GROUP ACCOUNTS WITH SUDO CAPABILITIES \n \n"
+printf "        	GROUPS WITH SUDO PRIVILEGES \n \n"
 for i in $GROUP
 do
 GROUPSUDO="$(grep -e "$i" /etc/sudoers | sed -n '/#/!p' | sed -n '/bin/!p' | sed -n '/User_Alias/!p' | sed -n '/root/!p')"
