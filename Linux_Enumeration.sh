@@ -168,3 +168,10 @@ if [ "$rootdir" ]; then
     printf "$rootdir \n"
     printf "\n \n"
 fi
+
+# Can root login via ssh?
+sshroot=`grep "PermitRootLogin " /etc/ssh/sshd_config | grep -v "#" | awk '{print  $2}'`
+if [ "$sshroot" = "yes" ]; then
+  printf "WARNING Root can ssh into this machine. It is recommended that you disable this. \n" ; grep "PermitRootLogin " /etc/ssh/sshd_config | grep -v "#" 
+  printf "\n \n"
+fi
