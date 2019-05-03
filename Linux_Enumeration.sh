@@ -51,8 +51,8 @@ fi
 
 
 # System Information
-#"Basic sysinfo summary."
 
+#"Basic sysinfo summary."
 
 printf "\n \n"
 printf "		SYSTEM SUMMARY \n"
@@ -67,23 +67,29 @@ printf "\n \n"
 
 #Network Information
 printf "		NETWORK INTERFACE SUMMARY \n"
-printf "$( ip addr show | sed -n '/valid/!p' | awk -F " " '{print $2}')"
-printf "\n"
+printf "$( ip addr show | sed -n '/valid/!p' | awk -F " " '{print $2}') \n"
+printf "\n \n"
 
 #DNS Information
 printf "		DNS SERVER SUMMARY \n"
-printf "$(sed -n '/nameserver/p' /etc/resolv.conf  | awk -F" " '{print $2}')"
-printf "\n"
+printf "$(sed -n '/nameserver/p' /etc/resolv.conf  | awk -F" " '{print $2}') \n"
+printf "\n \n"
 
 # User Information
+
+#What user is running this? (whoami)
+printf "                CURRENT USER \n"
+printf "$(whoami)\n"
+printf "\n \n"
+
 #Print username in /etc/passwd, excluding those with the /sbin/nologin or /bin/false
 printf "		USERS WITH BASH PRIVILEGES \n" 
- printf "$(cat /etc/passwd | sed -n '/false/!p' | sed -n '/nologin/!p' | awk -F":" '{print $1}')"
- printf "\n"
+ printf "$(cat /etc/passwd | sed -n '/false/!p' | sed -n '/nologin/!p' | awk -F":" '{print $1}') \n"
+ printf "\n \n"
  # Print all other users (i.e. service accounts)
  printf "		USERS WITHOUT BASH PRIVILEGES \n	'i.e. Service Accounts or Disabled Accounts' \n"
- printf "$(cat /etc/passwd | sed -n '/bash/!p' | awk -F":" '{print $1}')"
- printf "\n"
+ printf "$(cat /etc/passwd | sed -n '/bash/!p' | awk -F":" '{print $1}') \n"
+ printf "\n \n"
  
 
 #Check who has sudo access
@@ -148,8 +154,17 @@ printf "$(systemctl | sed -n '/service/p' | sed -n '/active/p' | awk -F"." '{pri
 else 
 printf "		Distribution = Ubuntu, Debian or Other \n			checking Service. \n		 	'?' = Status Unknown \n		 	'+' = Status Running \n "
 printf "$(service --status-all | sed -n '/+/p')"
+printf "\n"
+printf "\n \n"
 fi
 
 
 # Find Interesting Files
 
+# Can we access the root directory?
+rootdir=`ls -ahl /root/`
+if [ "$rootdir" ]; then
+    printf "WARNING Root's home directory can be read by this user! \n"
+    printf "$rootdir \n"
+    printf "\n \n"
+fi
