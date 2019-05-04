@@ -162,12 +162,18 @@ fi
 # Find Interesting Files
 
 # Can we access the root directory?
+WHOAMI="$(whoami)"
+if [[ $WHOAMI != root ]]
+then 
 rootdir=`ls -ahl /root/`
 if [ "$rootdir" ]; then
     printf "WARNING Root's home directory can be read by this user! \n"
     printf "$rootdir \n"
     printf "\n \n"
 fi
+else
+	printf "\n This user is root, skipping current user /root directory access check."
+fi 
 
 # Can root login via ssh?
 sshroot=`grep "PermitRootLogin " /etc/ssh/sshd_config | grep -v "#" | awk '{print  $2}'`
@@ -176,4 +182,62 @@ if [ "$sshroot" = "yes" ]; then
   printf "\n \n"
 fi
 
-#
+# ANy insecure SSH private keys?
+SSHCHECK="$(ls -a /home/*/ | awk '$1 == ".ssh" {print $1}')"
+if [[ $SSHCHECK == '.ssh' ]]
+then
+SSHPERM="$(stat -c %a-%n /home/*/.ssh/* | sed '/pub/d')"
+for i in $SSHPERM
+	do
+	ALL="$i"
+	DIR="$(printf $ALL | awk -F'-' '{print $2}')"
+	PERM="$(printf $ALL | awk -F'-'  '{print $1}')"
+	if [ $PERM == ' ' ]
+	then
+		continue 
+	fi 
+	if [ $PERM == 600 ]
+	then 
+		printf "\n \t \t \t \t  NOTICE: SSH KEY FILE FOUND \n \t  $DIR  has correct permissions configuration of 600 or -rw------ \n  "
+	continue
+	fi 	
+	if [ $PERM != 600 ]
+	then
+	printf "\n \t \t  \t \t WARNING: INSECURE SHH KEY FILE POTENTIALLY FOUND IN HOME DIRECTORIES  \n \t  $DIR permission configuration something other than -rw------ or 600. \n \t This may indicate that a user's SSH keys are insecurely stored. \n \t If this is a private key, please change the permissions configuration to 600 to ensure proper security of sensitive files. \n"
+	fi
+done
+else
+	printf " \n \t  \t \t \t  NOTICE: NO .SSH DIRECTORIES FOUND IN HOME DIRECTORIES  \n"
+ 
+fi 
+
+SSHCHECK="$(ls -a /root/ | awk '$1 == ".ssh" {print $1}')"
+if [[ $SSHCHECK == '.ssh' ]]
+then
+SSHPERM="$(stat -c %a-%n /root/.ssh/* | sed '/pub/d' )" 
+for i in $SSHPERM
+	do
+	ALL="$i"
+	DIR="$(printf $ALL | awk -F'-' '{print $2}')"
+	PERM="$(printf $ALL | awk -F'-'  '{print $1}')" 
+	if [ $PERM == " " ]
+	then 
+		printf "\n \t NO SSH KEY FILES FOUND \n"
+		continue
+	fi
+	if [ $PERM == 600 ]
+	then 
+		printf "\n \t \t \t \t SSH KEY FILE FOUND \n \t  $DIR  has the correct permissions configuration of 600 or -rw------ \n  "
+	continue
+	fi 	
+	if [ $PERM != " " ] && [ $PERM != 600 ]
+	then
+	printf "\n \t \t \t \t \t WARNING: INSECURE SHH KEY FILE POTENTIALLY FOUND IN HOME DIRECTORIES  \n \t  $DIR permission configuration something other than -rw------ or 600. \n \t This may indicate that a user's SSH keys are insecurely stored. \n \t If this is a private key, please change the permissions configuration to 600 to ensure proper security of sensitive files. \n"
+	fi
+done
+else
+	printf " \n \t  \t \t \t  NOTICE: NO .SSH DIRECTORY FOUND IN ROOT DIRECTORY  \n"
+ 
+fi 
+
+
