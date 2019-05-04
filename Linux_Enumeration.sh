@@ -20,16 +20,27 @@ ascii()
 EOF
 }
 
-# Define help options of -h and -?
+# Define help 
 help()
 {
-    echo "There are currently no other options other than -h and -? (help) for now. Usage of this script only requires you to run it."
+    echo "You can run this using either -h or -?. You may specify -m to send this report to an email."
 }
+
+
+#Need to fix this mail portion.
+#mail()
+# {
+#	mailx -a /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log" -s "Linux Enumerator $(date --date=today +%m-%d-%y-%T) Results"
+#}
+
+
+
 
 while getopts ":h?" opt; do
     case ${opt} in
         h ) help; exit;;
         ? ) help; exit;;
+		m ) mail;
     esac
 done
 
