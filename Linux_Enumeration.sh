@@ -82,6 +82,9 @@ printf "                CURRENT USER \n"
 printf "$(whoami)\n"
 printf "\n \n"
 
+#What groups is the user a member of?
+printf "USER GROUP MEMBERSHIP:\n"
+grep "${whoami}" /etc/group | awk -F ":" '{print $1}'
 #Print username in /etc/passwd, excluding those with the /sbin/nologin or /bin/false
 printf "		USERS WITH BASH PRIVILEGES \n" 
  printf "$(cat /etc/passwd | sed -n '/false/!p' | sed -n '/nologin/!p' | awk -F":" '{print $1}') \n"
@@ -93,6 +96,12 @@ printf "		USERS WITH BASH PRIVILEGES \n"
  
 
 #Check who has sudo access
+cat /etc/sudoers 2>&1 | tee /tmp/canIsudo &>/dev/null 
+CANSUDO="$(cat /tmp/canIsudo | awk -F":" '{print $3}')"
+if [[ $CANSUDO == " Permission denied" ]]
+then
+	printf "\n \t \t Cannot access /etc/sudoers file, skipping this check. \n \n"
+else 
 USER="printf "$(cat /etc/passwd | awk -F":" '{print $1}')""
 GROUP="printf "$(cat /etc/group | awk -F":" '{print $1}')""
 printf "\n"
@@ -142,7 +151,7 @@ else
 continue
 fi
 done
-
+fi 
 
 # Services
 #Checking if Distro is Redhat/Centos or other, using Systemctl for Redhat/Centos and Services for other. 
@@ -158,14 +167,13 @@ printf "\n"
 printf "\n \n"
 fi
 
-
 # Find Interesting Files
 
 # Can we access the root directory?
 WHOAMI="$(whoami)"
 if [[ $WHOAMI != root ]]
 then 
-rootdir=`ls -ahl /root/`
+rootdir=`ls -ahl /root/ 2>/dev/null`
 if [ "$rootdir" ]; then
     printf "WARNING Root's home directory can be read by this user! \n"
     printf "$rootdir \n"
@@ -211,10 +219,11 @@ else
  
 fi 
 
-SSHCHECK="$(ls -a /root/ | awk '$1 == ".ssh" {print $1}')"
+
+SSHCHECK="$(ls -a /root/  | awk '$1 == ".ssh" {print $1}')"
 if [[ $SSHCHECK == '.ssh' ]]
 then
-SSHPERM="$(stat -c %a-%n /root/.ssh/* | sed '/pub/d' )" 
+SSHPERM="$(stat -c %a-%n /root/.ssh/* | sed '/pub/d' 2/dev/null)" 
 for i in $SSHPERM
 	do
 	ALL="$i"
@@ -238,6 +247,5 @@ done
 else
 	printf " \n \t  \t \t \t  NOTICE: NO .SSH DIRECTORY FOUND IN ROOT DIRECTORY  \n"
  
-fi 
-
+fi
 
