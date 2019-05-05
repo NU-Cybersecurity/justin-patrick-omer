@@ -21,7 +21,7 @@ EOF
 }
 
 # Define help 
-help()
+helps()
 {
     echo "You can run this using either -h or -?. You may specify -m to send this report to an email."
 }
@@ -34,30 +34,31 @@ help()
 #}
 
 
-
-
-while getopts ":h?" opt; do
-    case ${opt} in
-        h ) help; exit;;
-        ? ) help; exit;;
-		m ) mail;
+report()
+{
+	exec >	>(tee -i /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log")
+	exec 2>&1
+}
+while getopts "hr?:" opt; do
+	case "$opt" in
+        h) help; exit 0;;
+        ?) help; exit 0;;
+	r) report;;
     esac
 done
 
 ascii
-printf "\n \nWould you like a copy of the results? \nEnter Y or N (Default N): "
-read RESULTS
-if [ "$RESULTS"  == "Y" ] 
-then
-printf "\n \nA COPY OF THE RESULTS WILL BE CREATED AT: /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log"  "
+#printf "\n \nWould you like a copy of the results? \nEnter Y or N (Default N): "
+#read RESULTS
+#if [ "$RESULTS"  == "Y" ] 
+#then
+#printf "\n \nA COPY OF THE RESULTS WILL BE CREATED AT: /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log"  "
 # Redirect stdout ( > ) into a named pipe ( >() ) running "tee"
-exec >	>(tee -i /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log")
-# Without this, only stdout would be captured - i.e. log file would not contain any error messages.
-# log file would not contain any error messages.
-exec 2>&1
-else
-printf "\n \n A COPY WILL NOT BE SAVED"
-fi
+#exec >	>(tee -i /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log")
+#exec 2>&1
+#else
+#printf "\n \n A COPY WILL NOT BE SAVED"
+#fi
 
 
 
