@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # AUTHORS: Justin B, Patrick W, Omer
 # This script is intended to help users in an offensive and defensive manner when trying to enumerate a local linux machine for permissions issues.
 # This could include misconfigured file permissions, user permissions, sudo privileges, etc. 
@@ -25,10 +26,11 @@ help()
 #
 #
 #Need to fix this mail portion.
-#mail()
-# {
-#	mailx -a /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log" -s "Linux Enumerator $(date --date=today +%m-%d-%y-%T) Results"
-#}
+mail()
+{
+	MAIL=Y
+}
+
 report()
 {
 	exec >	>(tee -i /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log")
@@ -36,7 +38,7 @@ report()
 	printf "\n \n A COPY WIL BE SAVED in /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log" \n \n"
 }
 
-while getopts "hr?" opt; do
+while getopts "hr?m:" opt; do
 	case $opt in
 		h)
 			help
@@ -44,7 +46,10 @@ while getopts "hr?" opt; do
 		r)
 			report
 			;;
-
+		m)
+			mail
+			ADDRESS="$OPTARG"
+			;;
 		?)
 			help
 			;;
@@ -227,7 +232,7 @@ fi
 SSHCHECK="$(ls -a /root/  | awk '$1 == ".ssh" {print $1}')"
 if [[ $SSHCHECK == '.ssh' ]]
 then
-SSHPERM="$(stat -c %a-%n /root/.ssh/* | sed '/pub/d' 2/dev/null)" 
+SSHPERM="$(stat -c %a-%n /root/.ssh/* | sed '/pub/d' /dev/null)" 
 for i in $SSHPERM
 	do
 	ALL="$i"
@@ -253,3 +258,9 @@ else
  
 fi
 
+if [ $MAIL = "Y" ]
+then
+	LOG="/tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log""
+	echo $LOG | mailx -s "Linux Enumerator $(date --date=today +%m-%d-%y-%T) Results" $ADDRESS 
+
+fi
