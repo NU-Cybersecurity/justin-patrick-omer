@@ -5,10 +5,6 @@
 # Okay, so first we need to layout the sections of what we're trying to enumerate. Feel free to add more. I figure the current four is a decent amount? I know there are plenty of other
 # Linux Enumeration scripts out there with more but I want to see what we can create on our own and with what we know should be checked.
 # Cool ASCII text because... Why not?
-
-
-
-
 ascii()
 {
     cat << "EOF"
@@ -21,12 +17,12 @@ EOF
 }
 
 # Define help 
-helps()
+help()
 {
-    echo "You can run this using either -h or -?. You may specify -m to send this report to an email."
+    echo 'You can run this using either -h or -?. You may specify -m to send this report to an email.'
 }
-
-
+#
+#
 #Need to fix this mail portion.
 #mail()
 # {
@@ -34,32 +30,25 @@ helps()
 #}
 
 
-report()
-{
-	exec >	>(tee -i /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log")
-	exec 2>&1
-}
-while getopts "hr?:" opt; do
-	case "$opt" in
-        h) help; exit 0;;
-        ?) help; exit 0;;
-	r) report;;
-    esac
+while getopts "hr?" opt; do
+	case $opt in
+		r)
+			exec >	>(tee -i /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log")
+			exec 2>&1
+			printf "\n \n A COPY WIL BE SAVED in /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log" \n \n"
+			;;
+		h)
+			help
+			exit 0
+			;;
+		?)
+			help
+			exit 0
+			;;
+	esac
 done
 
 ascii
-#printf "\n \nWould you like a copy of the results? \nEnter Y or N (Default N): "
-#read RESULTS
-#if [ "$RESULTS"  == "Y" ] 
-#then
-#printf "\n \nA COPY OF THE RESULTS WILL BE CREATED AT: /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log"  "
-# Redirect stdout ( > ) into a named pipe ( >() ) running "tee"
-#exec >	>(tee -i /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log")
-#exec 2>&1
-#else
-#printf "\n \n A COPY WILL NOT BE SAVED"
-#fi
-
 
 
 # System Information
