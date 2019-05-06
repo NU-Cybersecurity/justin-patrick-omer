@@ -20,6 +20,7 @@ EOF
 help()
 {
     echo 'You can run this using either -h or -?. You may specify -m to send this report to an email.'
+    exit 0
 }
 #
 #
@@ -28,22 +29,24 @@ help()
 # {
 #	mailx -a /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log" -s "Linux Enumerator $(date --date=today +%m-%d-%y-%T) Results"
 #}
-
+report()
+{
+	exec >	>(tee -i /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log")
+	exec 2>&1
+	printf "\n \n A COPY WIL BE SAVED in /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log" \n \n"
+}
 
 while getopts "hr?" opt; do
 	case $opt in
-		r)
-			exec >	>(tee -i /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log")
-			exec 2>&1
-			printf "\n \n A COPY WIL BE SAVED in /tmp/Linux_Enumerator_Report-"$(date --date=today +%m-%d-%y-%T).log" \n \n"
-			;;
 		h)
 			help
-			exit 0
 			;;
+		r)
+			report
+			;;
+
 		?)
 			help
-			exit 0
 			;;
 	esac
 done
